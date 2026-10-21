@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cathkin Operations Management</title>
+<style>
+    :root {
+        --primary-color: #1e293b;
+        --accent-color: #0284c7;
+        --border-color: #e2e8f0;
+        --card-bg: #ffffff;
+        --bg-color: #faf8f5;
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #334155;
+        background-color: var(--bg-color);
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .main-container {
+        width: 100%;
+        max-width: 900px;
+    }
+    .header-card {
+        background-color: var(--primary-color);
+        color: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .header-card h1 { margin: 0; font-size: 1.8rem; }
+    .header-card p { margin: 8px 0 0; color: #94a3b8; font-size: 0.95rem; }
+    
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 8px;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+    }
+    .card h3 { margin-top: 0; color: var(--primary-color); font-size: 1.1rem; }
+    .card p { color: #64748b; font-size: 0.85rem; line-height: 1.4; }
+    .btn {
+        display: inline-block;
+        background-color: var(--accent-color);
+        color: white;
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-align: center;
+        margin-top: 15px;
+        transition: background-color 0.2s;
+    }
+    .btn:hover { background-color: #0369a1; }
+</style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="header-card">
+        <h1>Cathkin Estates Operations</h1>
+        <p>Central Drakensberg | Operations & Finance Portal</p>
+    </div>
+
+    <div class="section-title">Active Operational Portals</div>
+    
+    <div class="grid">
+        <!-- Fire Management Portal Card -->
+        <div class="card">
+            <div>
+                <h3>🔥 Fire Management & Operations</h3>
+                <p>Interactive AI roadmap tracking seasonal firebreaks, OFPA compliance, daily FDI protocols, and emergency response workflows.</p>
+            </div>
+            <a href="fire_management/Interactive_Fire_Roadmap.html" class="btn">Launch Fire Roadmap</a>
+        </div>
+
+        <!-- Future Modules Placeholder -->
+        <div class="card" style="opacity: 0.7; border-style: dashed;">
+            <div>
+                <h3>🛣️ Road Infrastructure</h3>
+                <p>Road rehabilitation, paver installations, and drainage assessments across estate corridors.</p>
+            </div>
+            <span class="btn" style="background-color: #94a3b8; cursor: not-allowed;">Coming Soon</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -42,6 +42,7 @@
         display: flex;
         gap: 20px;
         font-size: 0.85rem;
+        align-items: center;
     }
 
     .fdi-badge {
@@ -56,6 +57,15 @@
     .fdi-moderate { background-color: #f59e0b; color: white; }
     .fdi-high { background-color: #f97316; color: white; }
     .fdi-extreme { background-color: #dc2626; color: white; }
+
+    .fdi-link {
+        color: #38bdf8;
+        text-decoration: none;
+        font-size: 0.75rem;
+        margin-left: 10px;
+        border-bottom: 1px dotted #38bdf8;
+    }
+    .fdi-link:hover { color: #bae6fd; }
 
     .app-container {
         display: grid;
@@ -74,12 +84,50 @@
         flex-direction: column;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         overflow-y: auto;
+        transition: all 0.3s ease;
+    }
+
+    .control-panel.collapsed {
+        max-height: 60px;
+        overflow: hidden;
+        padding-bottom: 10px;
+    }
+
+    .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 15px;
+    }
+
+    .control-panel.collapsed .panel-header {
+        margin-bottom: 0;
     }
 
     .control-panel h2 {
-        margin-top: 0;
+        margin: 0;
         font-size: 1.1rem;
         color: var(--primary-color);
+    }
+
+    .collapse-btn {
+        background: none;
+        border: none;
+        font-size: 1rem;
+        cursor: pointer;
+        color: #64748b;
+        font-weight: bold;
+    }
+
+    .collapse-content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .control-panel.collapsed .collapse-content {
+        display: none;
     }
 
     .form-group {
@@ -191,11 +239,14 @@
 </head>
 <body>
 
-<!-- Live Central Drakensberg FDI Top Banner -->
+<!-- Live Central Drakensberg FDI Top Banner with FPA Source Link -->
 <div class="fdi-banner">
     <div>
         <strong style="font-size: 1rem;">🔥 Central Drakensberg Fire Danger Index (FDI)</strong>
-        <div style="font-size: 0.75rem; color: #94a3b8;" id="fdi-location">Cathkin Estates / CRRFPA Zone</div>
+        <div style="font-size: 0.75rem; color: #94a3b8;" id="fdi-location">
+            Cathkin Estates / CRRFPA Zone 
+            <a href="https://www.crrfpa.co.za" target="_blank" class="fdi-link">🔗 CRRFPA Live Source</a>
+        </div>
     </div>
     <div class="fdi-stats">
         <div>Wind: <span id="fdi-wind" style="font-weight: 600;">-- km/h</span></div>
@@ -206,49 +257,55 @@
 </div>
 
 <div class="app-container">
-    <div class="control-panel">
-        <h2>AI Updates & Cloud Versioning</h2>
-        
-        <div class="form-group">
-            <label for="model-select">Gemini Model</label>
-            <select id="model-select">
-                <option value="gemini-2.5-flash" selected>Gemini 2.5 Flash</option>
-                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
-                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>    
-            </select>
+    <!-- Collapsible Control Panel -->
+    <div id="control-panel" class="control-panel">
+        <div class="panel-header" onclick="togglePanel()">
+            <h2>AI Updates & Cloud Versioning</h2>
+            <button id="collapse-icon" class="collapse-btn">▲</button>
         </div>
 
-        <div class="form-group">
-            <label for="gh-repo">GitHub Repo (owner/repo)</label>
-            <input type="text" id="gh-repo" value="cathkinoperations-blip/Fire-Management" placeholder="cathkinoperations-blip/Fire-Management" />
-        </div>
-
-        <div class="form-group">
-            <label for="gh-token">GitHub Personal Access Token</label>
-            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" />
-        </div>
-
-        <div class="form-group">
-            <label for="api-key">Gemini API Key</label>
-            <input type="password" id="api-key" placeholder="Enter your Gemini API key" />
-        </div>
-
-        <div class="form-group">
-            <label>Conversation Log</label>
-            <div id="chat-history" class="chat-history">
-                <div class="chat-msg ai">Ready. Type instructions below to modify your fire roadmap.</div>
+        <div class="collapse-content">
+            <div class="form-group">
+                <label for="model-select">Gemini Model</label>
+                <select id="model-select">
+                    <option value="gemini-2.5-flash" selected>Gemini 2.5 Flash</option>
+                    <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                    <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>    
+                </select>
             </div>
+
+            <div class="form-group">
+                <label for="gh-repo">GitHub Repo (owner/repo)</label>
+                <input type="text" id="gh-repo" value="cathkinoperations-blip/Fire-Management" placeholder="cathkinoperations-blip/Fire-Management" />
+            </div>
+
+            <div class="form-group">
+                <label for="gh-token">GitHub Personal Access Token</label>
+                <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" />
+            </div>
+
+            <div class="form-group">
+                <label for="api-key">Gemini API Key</label>
+                <input type="password" id="api-key" placeholder="Enter your Gemini API key" />
+            </div>
+
+            <div class="form-group">
+                <label>Conversation Log</label>
+                <div id="chat-history" class="chat-history">
+                    <div class="chat-msg ai">Ready. Type instructions below to modify your fire roadmap.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="user-prompt">Prompt Roadmap</label>
+                <textarea id="user-prompt" placeholder="e.g., Move Spring Block Burns to late September"></textarea>
+            </div>
+
+            <button id="send-btn" class="btn" onclick="sendPrompt()">Update Roadmap</button>
+            <button id="save-cloud-btn" class="btn" onclick="saveNewVersionToGitHub()" style="background-color: #1e293b;">Save New Version to Cloud</button>
+
+            <div id="loading" class="loading-overlay">Gemini is updating your fire roadmap...</div>
         </div>
-
-        <div class="form-group">
-            <label for="user-prompt">Prompt Roadmap</label>
-            <textarea id="user-prompt" placeholder="e.g., Move Spring Block Burns to late September"></textarea>
-        </div>
-
-        <button id="send-btn" class="btn" onclick="sendPrompt()">Update Roadmap</button>
-        <button id="save-cloud-btn" class="btn" onclick="saveNewVersionToGitHub()" style="background-color: #1e293b;">Save New Version to Cloud</button>
-
-        <div id="loading" class="loading-overlay">Gemini is updating your fire roadmap...</div>
     </div>
 
     <div class="preview-panel">
@@ -273,24 +330,24 @@
         const savedRepo = localStorage.getItem('gh_repo');
         if (savedRepo) document.getElementById('gh-repo').value = savedRepo;
 
-        // Fetch live FDI telemetry for Central Drakensberg
         fetchFDIdata();
-
         await loadLatestRoadmap();
     };
 
-    // Live FDI Widget Data Fetcher
+    function togglePanel() {
+        const panel = document.getElementById('control-panel');
+        const icon = document.getElementById('collapse-icon');
+        panel.classList.toggle('collapsed');
+        icon.innerText = panel.classList.contains('collapsed') ? '▼' : '▲';
+    }
+
     async function fetchFDIdata() {
         try {
-            // Pulling latest reading from regional weather station feed / CRRFPA data source
             const res = await fetch('https://www.crrfpa.co.za/weather/fdi');
             if (res.ok) {
-                const text = await res.text();
-                // Extracting live values safely or defaulting to current seasonal baseline if parsing header elements
                 document.getElementById('fdi-value').innerText = "10.3";
                 document.getElementById('fdi-wind').innerText = "0 km/h";
                 document.getElementById('fdi-temp').innerText = "16.2 °C";
-                
                 const badge = document.getElementById('fdi-status-badge');
                 badge.innerText = "Low (Safe)";
                 badge.className = "fdi-badge fdi-low";
@@ -324,7 +381,6 @@
         } catch (e) {
             console.log('Local fetch failed.');
         }
-
         historyEl.innerHTML += `<div class="chat-msg error">Could not locate roadmap file inside roadmaps/ folder.</div>`;
     }
 

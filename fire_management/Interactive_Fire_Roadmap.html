@@ -52,7 +52,7 @@
         position: relative;
     }
 
-    /* Collapsed state (collapsed to the left) */
+    /* Collapsed state (collapsed to the left by default) */
     .control-panel.collapsed {
         width: 48px;
         min-width: 48px;
@@ -236,11 +236,11 @@
 <body>
 
 <div class="app-container">
-    <!-- Left-Collapsible Control Panel -->
-    <div id="control-panel" class="control-panel">
+    <!-- Left-Collapsible Control Panel (Defaults to Collapsed) -->
+    <div id="control-panel" class="control-panel collapsed">
         <div class="panel-header" onclick="handlePanelClick(event)">
             <h2 id="panel-title">AI Updates & Cloud Versioning</h2>
-            <button id="collapse-icon" class="collapse-btn" onclick="togglePanel(event)" title="Collapse Panel">◀</button>
+            <button id="collapse-icon" class="collapse-btn" onclick="togglePanel(event)" title="Expand Panel">▶</button>
         </div>
 
         <div class="collapse-content">

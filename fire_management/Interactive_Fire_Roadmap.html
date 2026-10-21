@@ -433,28 +433,30 @@
         const repo = document.getElementById('gh-repo').value.trim();
         const token = document.getElementById('gh-token').value.trim();
         const btnEl = document.getElementById('save-cloud-btn');
-
+    
         if (!repo || !token) { alert('Please enter both your GitHub Repository and Personal Access Token.'); return; }
-
+    
         localStorage.setItem('gh_token', token);
         localStorage.setItem('gh_repo', repo);
         btnEl.textContent = 'Saving New Version...';
         btnEl.disabled = true;
-
+    
         try {
             const headers = { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}` };
             const now = new Date();
             const timestamp = now.toISOString().replace(/[:T]/g, '-').slice(0, 19);
             const fileName = `fire_management/roadmaps/roadmap_${timestamp}.html`;
             const base64Content = btoa(unescape(encodeURIComponent(currentHTML)));
-
-            // Fixed clean URL string
-            const putRes = await fetch(`[https://api.github.com/repos/$](https://api.github.com/repos/$){repo}/contents/${fileName}`, {
+    
+            // Clean, direct GitHub REST API endpoint URL
+            const apiUrl = `https://api.github.com/repos/${repo}/contents/${fileName}`;
+    
+            const putRes = await fetch(apiUrl, {
                 method: 'PUT',
                 headers: headers,
                 body: JSON.stringify({ message: `Add new version roadmap snapshot: ${timestamp}`, content: base64Content })
             });
-
+    
             if (!putRes.ok) {
                 const errJson = await putRes.json();
                 throw new Error(`(${putRes.status}) ${errJson.message || 'Failed to upload version file to GitHub.'}`);
@@ -467,7 +469,6 @@
             btnEl.disabled = false;
         }
     }
-
     function exportHTML() {
         const blob = new Blob([currentHTML], { type: 'text/html' });
         const url = URL.createObjectURL(blob);

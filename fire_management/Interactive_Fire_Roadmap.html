@@ -456,7 +456,7 @@
 
             if (!putRes.ok) {
                 const errJson = await putRes.json();
-                throw new Error(errJson.message || 'Failed to upload version file to GitHub.');
+                throw new Error(`(${putRes.status}) ${errJson.message || 'Failed to upload version file to GitHub.'}`);
             }
             alert(`Successfully saved new version as '${fileName}' to GitHub!`);
         } catch (err) {
